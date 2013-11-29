@@ -5,6 +5,8 @@ from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import Terminal256Formatter
 
+from pyr.defaults import default_config
+
 # py3 compatibility; raw_input renamed to input
 try:
     input = raw_input
@@ -13,9 +15,12 @@ except NameError:
 
 
 class PyrConsole(InteractiveConsole):
-    def __init__(self, locals=None, filename="<console>",
-                 histfile=os.path.expanduser("~/.console-history")):
+    def __init__(self, locals=None, filename="<console>", histfile=None):
         InteractiveConsole.__init__(self, locals, filename)
+
+        if not histfile:
+            histfile = os.path.expanduser("~/.pyr_history")
+
         self.init_history(histfile)
         self.init_syntax_highlighting()
 
@@ -64,9 +69,16 @@ class PyrConsole(InteractiveConsole):
         sys.stdout.flush()
 
 
-def main():
+def main(config=None):
+    if not config:
+        config = {}
+        config_path = os.path.expanduser("~/.pyr_profile")
+        if os.path.exists(config_path):
+            execfile(config_path, config)
+
+    config = dict(default_config.items() + config.items())
     console = PyrConsole()
-    console.interact()
+    console.interact(banner=config.get('banner'))
 
 if __name__ == '__main__':
     main()
