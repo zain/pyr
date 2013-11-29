@@ -10,11 +10,6 @@ setup(
     author_email='zain@inzain.net',
     url='https://github.com/zain/pyr',
     packages=['pyr'],
-    install_requires=['pygments'],
-    entry_points={
-        'console_scripts': [
-            'pyr = pyr.shell:main',
-        ],
-    },
+    requires=['pygments'],
     scripts=['bin/pyr'],
 )
