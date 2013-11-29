@@ -64,5 +64,9 @@ class PyrConsole(InteractiveConsole):
         sys.stdout.flush()
 
 
-console = PyrConsole()
-console.interact()
+def main():
+    console = PyrConsole()
+    console.interact()
+
+if __name__ == '__main__':
+    main()
