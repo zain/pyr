@@ -2,7 +2,8 @@ from codeop import CommandCompiler, Compile
 
 
 class PyrCompile(Compile):
-    pass
+    def __call__(self, source, filename, symbol):
+        return Compile.__call__(self, source, filename, symbol)
 
 
 class PyrCompiler(CommandCompiler):
