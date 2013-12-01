@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='pyr',
-    version='0.3.1',
+    version='0.3.2',
     description='A nicer REPL for Python.',
     author='Zain Memon',
     author_email='zain@inzain.net',
