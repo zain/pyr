@@ -50,7 +50,6 @@ class PyrConsole(InteractiveConsole):
         self.compile = PyrCompiler()
 
     def init_history(self, histfile):
-        readline.parse_and_bind("tab: complete")
         if hasattr(readline, "read_history_file"):
             try:
                 readline.read_history_file(histfile)
