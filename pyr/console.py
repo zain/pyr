@@ -108,7 +108,7 @@ class PyrConsole(InteractiveConsole):
         self.pp = pprint.PrettyPrinter()
 
     def pretty_print(self, result):
-        if not result:
+        if result is None:
             return
 
         output = self.pp.pformat(result)
