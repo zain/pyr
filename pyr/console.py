@@ -105,7 +105,7 @@ class PyrConsole(InteractiveConsole):
         sys.stdout.flush()
 
     def init_pretty_printer(self):
-        self.pp = pprint.PrettyPrinter(indent=4)
+        self.pp = pprint.PrettyPrinter()
 
     def pretty_print(self, result):
         if not result:
