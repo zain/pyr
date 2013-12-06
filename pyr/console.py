@@ -37,8 +37,7 @@ def softspace(file, newvalue):
 
 
 class PyrConsole(InteractiveConsole):
-    def __init__(self, locals=None, filename="<console>", histfile=None, pygments_style=None, initfile=None,
-            banner=None):
+    def __init__(self, locals=None, filename="<console>", histfile=None, pygments_style=None):
         InteractiveConsole.__init__(self, locals, filename)
 
         if not histfile:
@@ -50,11 +49,6 @@ class PyrConsole(InteractiveConsole):
 
         self.compile = PyrCompiler()
 
-        self.banner = banner
-
-        if initfile:
-            self.feed_in_file(initfile)
-
     def init_history(self, histfile):
         if hasattr(readline, "read_history_file"):
             try:
@@ -65,54 +59,6 @@ class PyrConsole(InteractiveConsole):
 
     def save_history(self, histfile):
         readline.write_history_file(histfile)
-
-    def feed_in_file(self, initfile):
-        commands = initfile.read().split("\n")[:-1]
-
-        try:
-            sys.ps1
-        except AttributeError:
-            sys.ps1 = ">>> "
-        try:
-            sys.ps2
-        except AttributeError:
-            sys.ps2 = "... "
-        cprt = 'Type "help", "copyright", "credits" or "license" for more information.'
-        if self.banner is None:
-            self.write("Python %s on %s\n%s\n(%s)\n" %
-                       (sys.version, sys.platform, cprt,
-                        self.__class__.__name__))
-        else:
-            self.write("%s\n" % str(self.banner))
-        self.banner = "\x1b[A"  # remove the default newline
-        more = 0
-        for line in commands:
-            try:
-                if more:
-                    prompt = sys.ps2
-                else:
-                    prompt = sys.ps1
-                try:
-                    self.write("%s %s\n" % (line, prompt))
-                    self.syntax_highlight(line, prompt)
-
-                    # Can be None if sys.stdin was redefined
-                    encoding = getattr(sys.stdin, "encoding", None)
-                    if encoding and not isinstance(line, unicode):
-                        line = line.decode(encoding)
-                except EOFError:
-                    self.write("\n")
-                    break
-                else:
-                    more = self.push(line)
-            except KeyboardInterrupt:
-                self.write("\nKeyboardInterrupt\n")
-                self.resetbuffer()
-                more = 0
-
-    def interact(self, *args, **kwargs):
-        kwargs['banner'] = self.banner
-        InteractiveConsole.interact(self, *args, **kwargs)
 
     def init_syntax_highlighting(self, pygments_style):
         self.past_lines = []
